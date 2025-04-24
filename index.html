@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript and Node.js Basics</title>
+    <style>
+        body{
+            font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        pre{
+            background-color: gray;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        @media screen and (max-width:767px) {
+            pre{
+            background-color: gray;
+            padding: 6px;
+            font-size: 7px;
+        }
+
+        }
+    </style>
+</head>
+<body>
+
+<h1>JavaScript and Node.js Basics</h1>
+
+<h2>1. What is Node.js?</h2>
+<pre>
+Node.js is an open-source, 
+cross-platform runtime environment that allows you to run JavaScript code outside of a web browser.
+JavaScript on the Server-Side: Run backend code using nodejs
+
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.write('Hello from Node.js');
+  res.end();
+});
+
+server.listen(3000, () => {
+  console.log('Server running at http://localhost:3000/');
+});
+</pre>
+
+<h2>2 .What is JS?</h2>
+<pre>
+JS is a single-threaded, non-blocking asynchronous concurrent language. 
+It is used as a client-side scripting language 
+as well as server-side using Node.js.
+</pre>
+
+<h2>3. What are arrow functions and how are they different?</h2>
+<pre>
+Arrow functions are shorter and more concise way of writing functions in JavaScript. 
+They were introduced in ES6 (ECMAScript 2015).
+
+Basic Syntax:
+const add = (a, b) => {
+return a + b;
+};
+</pre>
+
+<h2>4. Event Loop in JS?</h2>
+<pre>
+As JS is single-threaded, 
+the event loop manages async tasks by queuing them after synchronous tasks are done.
+
+Example:
+console.log("1. Start");
+
+setTimeout(() => {
+  console.log("2. Inside setTimeout");
+}, 0);
+
+console.log("3. End");
+
+Output will be:
+1. Start
+3. End
+2. Inside setTimeout
+
+Explanation:
+console.log("1. Start") runs first — it's synchronous.
+setTimeout is asynchronous, so it's scheduled to run later.
+console.log("3. End") runs next.
+</pre>
+
+<h2>5. Callback Function?</h2>
+<pre>
+A callback is a function passed as an argument to another function.
+This technique allows a function to call another function.
+A callback function can run after another function has finished.
+
+Example:
+function sayHi() {
+  console.log("Hi");
+}
+
+function greet(callback) {
+  callback();  // calling the passed-in function
+}
+
+greet(sayHi);  // ✅ pass function reference (not sayHi())
+
+Output:
+Hello, Alice
+Goodbye!
+
+Explanation:
+sayBye is passed as a callback to greetUser.
+greetUser runs and calls sayBye after greeting the user.
+</pre>
+
+<h2>6. Promise in JS?</h2>
+<pre>
+A Promise is an object that represents the eventual completion (or failure) 
+of an asynchronous operation and its resulting value.
+
+const myPromise = new Promise((resolve, reject) => {
+  const success = true; // Try changing this to false
+
+  if (success) {
+    resolve("✅ Promise resolved!");
+  } else {
+    reject("❌ Promise rejected!");
+  }
+});
+
+myPromise
+  .then((message) => {
+    console.log("Then:", message);
+  })
+  .catch((error) => {
+    console.log("Catch:", error);
+  });
+
+Or
+
+If you don’t want to use .then, use async await:
+async function run() {
+  try {
+    const message = await myPromise;
+    console.log("Then:", message);
+  } catch (error) {
+    console.log("Catch:", error);
+  }
+}
+
+run();
+
+Explanation:
+new Promise((resolve, reject) => {...}) creates a new promise.
+Inside the promise, based on success, it calls resolve() or reject().
+.then() handles the success result.
+.catch() handles any errors or rejection.
+</pre>
+
+<h2>7. Promises with Async to Call API:</h2>
+<pre>
+async function fetchData() {
+  const res = await fetch('/api');
+  const data = await res.json();
+}
+</pre>
+
+<h2>8. Event Bubbling & Event Delegation?</h2>
+<pre>
+Event Bubbling: Events move from child to parent.
+
+Example: Event Bubbling
+< div id="parent">
+  < button id="child">Click me< /button>
+</ div>
+
+< script>
+  document.getElementById("parent").addEventListener("click", () => {
+    console.log("Parent clicked");
+  });
+
+  document.getElementById("child").addEventListener("click", () => {
+    console.log("Child clicked");
+  });
+< /script>
+
+Event Delegation: Attach one event handler to the parent to manage the child.
+Example: Event Delegation
+< ul id="list">
+  < li>Item 1</ li>
+  < li>Item 2</ li>
+  < li>Item 3</ li>
+< /ul>
+
+< script>
+  document.getElementById("list").addEventListener("click", (event) => {
+    if (event.target.tagName === "LI") {
+      console.log("Clicked on:", event.target.textContent);
+    }
+  });
+< /script>
+</pre>
+
+<h2>9. Closures?</h2>
+<pre>
+A closure is a function that remembers the variables from its outer scope, 
+even after that outer function has finished executing.
+
+Example:
+function outer() {
+  let count = 0;
+
+  function inner() {
+    count++;
+    console.log("Count is:", count);
+  }
+
+  return inner;
+}
+
+const counter = outer();  // outer() runs and returns inner()
+counter(); // Count is: 1
+counter(); // Count is: 2
+counter(); // Count is: 3
+// closure — a function holding on to a 
+local variable after the outer function has finished.
+</pre>
+
+<h2>10. What is Express.js?</h2>
+<pre>
+Express.js is a minimal and flexible web framework for Node.js.
+
+It helps you build:
+Web applications
+RESTful APIs
+Backend services
+
+Why use Express?
+✅ Handles routing (GET, POST, etc.)
+✅ Simplifies request & response handling
+✅ Supports middleware (for logging, authentication, etc.)
+✅ Works great with databases (like MongoDB, MySQL)
+
+Example to Create Server with Express:
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Hello from Express!');
+});
+
+app.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});
+
+How Routing Works in Express:
+const express = require('express');
+const app = express();
+
+// GET route
+app.get('/', (req, res) => {
+  res.send('Welcome to the homepage!');
+});
+
+// POST route
+app.post('/login', (req, res) => {
+  res.send('Login submitted!');
+});
+
+// Route with a parameter
+app.get('/user/:id', (req, res) => {
+  res.send(`User ID is: ${req.params.id}`);
+});
+
+app.listen(3000, () => {
+  console.log('Server running at http://localhost:3000');
+});
+</pre>
+
+<h2>11. What is MongoDB?</h2>
+<pre>
+MongoDB is a NoSQL database — meaning it stores data not as tables, but as documents.
+Documents: Data is stored in JSON-like format called BSON(Binary JSON).
+Collections: Groups of documents (like tables in SQL).
+Schema-less: You don’t need to define a strict structure — you can have flexible fields.
+
+Example:
+{
+  "name": "John",
+  "age": 30,
+  "skills": ["JavaScript", "React"]
+}
+
+To start with MongoDB, you need to install it on your system. 
+Link: https://www.mongodb.com/try/download/community
+</pre>
+
+<h2>12. Props and State in reactjs</h2>
+<pre>
+Component (Parent)
+import React from "react";
+import Greeting from "./Greeting";
+
+function App() {
+  return (
+    < div>
+      < Greeting name="Alice" />
+    < /div>
+  );
+}
+
+export default App;
+</pre>
+
+<pre>
+Greeting Component (Child with State + using Props)
+
+import React, { useState } from "react";
+
+function Greeting(props) {
+  const [count, setCount] = useState(0); // state
+
+  return (
+    < div>
+      < h2>Hello, {props.name}!< /h2> {/* props */}
+      < p>You clicked {count} times< /p> {/* state */}
+      < button onClick={() => setCount(count + 1)}>Click me< /button> {/* state change */}
+    < /div>
+  );
+}
+
+export default Greeting;
+
+</pre>
+
+<h2>13. Controlled vs Uncontrolled in reactjs</h2>
+<pre>
+    Controlled Component:
+    import React, { useState } from "react";
+    
+    function ControlledComponent() {
+      const [name, setName] = useState("");
+    
+      const handleChange = (event) => {
+        setName(event.target.value); // Update the state as the input changes
+      };
+    
+      return (
+        < div>
+          < input
+            type="text"
+            value={name} // The value is controlled by the state
+            onChange={handleChange} // React updates state on input change
+          />
+          < p>Value: {name}< /p>
+        < /div>
+      );
+    }
+    
+    export default ControlledComponent;    
+</pre>
+
+<pre>
+Uncontrolled Component:
+import React, { useRef } from "react";
+
+function UncontrolledComponent() {
+  const nameInput = useRef();
+
+  const handleSubmit = () => {
+    alert("Value: " + nameInput.current.value); // Access the input value directly from the DOM
+  };
+
+  return (
+    < div>
+      < input type="text" ref={nameInput} />
+      < button onClick={handleSubmit}>Submit< /button>
+    < /div>
+  );
+}
+
+export default UncontrolledComponent;
+</pre>
+
+</body>
+</html>
